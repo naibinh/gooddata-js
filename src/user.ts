@@ -177,16 +177,25 @@ export class UserModule {
      */
     public getAccountInfo() {
         return this.xhr.get("/gdc/app/account/bootstrap").then((result: any) => {
-            const { bootstrapResource } = result.getData();
-            return {
-                login: bootstrapResource.accountSetting.login,
-                loginMD5: bootstrapResource.current.loginMD5,
-                firstName: bootstrapResource.accountSetting.firstName,
-                lastName: bootstrapResource.accountSetting.lastName,
-                organizationName: bootstrapResource.settings.organizationName,
-                profileUri: bootstrapResource.accountSetting.links.self,
-            };
+            const data = result.getData();
+            return this.getAccountInfoInBootstrap(data);
         });
+    }
+
+    /**
+     * Returns info about currently logged in user from bootstrap resource
+     * @param bootstrapData
+     */
+    public getAccountInfoInBootstrap(bootstrapData: any) {
+        const { bootstrapResource } = bootstrapData;
+        return {
+            login: bootstrapResource.accountSetting.login,
+            loginMD5: bootstrapResource.current.loginMD5,
+            firstName: bootstrapResource.accountSetting.firstName,
+            lastName: bootstrapResource.accountSetting.lastName,
+            organizationName: bootstrapResource.settings.organizationName,
+            profileUri: bootstrapResource.accountSetting.links.self,
+        };
     }
 
     /**
